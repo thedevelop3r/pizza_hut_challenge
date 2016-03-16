@@ -1,12 +1,25 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
+/**
+ * Solves problem 1 to the pizza hut math challenge:
+ * I'm thinking of a ten-digit integer whose digits 
+ * are all distintct. It happens that the number formed
+ * by the first n of them is divisible by n for each n
+ * from 1 to 10. What is my number?
+ *
+ * Answer: 3816547290
+ */
 
+
+
+// comparison of integers
 int cmpfunc(const void * a, const void * b)
 {
   return (*(int*)a - *(int*)b );
 }
 
+// check if the number is a solution
 int check(int *values)
 { 
   // get numbers along the way
@@ -47,13 +60,9 @@ int check(int *values)
 
 int main()
 {
-  int arr[] = {2,0,7,6,5,4,3,2,7,0};
-
-  printf("%d\n", check(arr));
-
   int a,b,c,d,e,f,g,h,i,j;
   
-  
+  // generate all possibilities
   for(a = 0; a < 10; a++)
   {
     for(b = 0; b < 10; b++)
@@ -62,25 +71,28 @@ int main()
       {
 	for(d = 0; d < 10; d++)
 	{
+	  // middle number must be 5 
+	  // (divisible by 5 at b/ c n = 5 => 0 or 5 && last number is 0)
 	  e = 5;
-	    for(f = 0; f < 10; f++)
+	  for(f = 0; f < 10; f++)
+	  {
+	    for(g = 0; g < 10; g++)
 	    {
-	      for(g = 0; g < 10; g++)
+	      for(h = 0; h < 10; h++)
 	      {
-		for(h = 0; h < 10; h++)
+		for(i = 0; i < 10; i++)
 		{
-		  for(i = 0; i < 10; i++)
-		  {
-		    j = 0;
-		      int values[] = {a,b,c,d,e,f,g,h,i,j};
-		      if(check(values))
-			printf("%lu\n", a*1000000000ul + b*100000000ul +
-			       c*10000000ul + d*1000000ul + e*100000ul +
-			       f*10000ul + g*1000ul + h*100ul + i*10ul + j);
-		  }
+		  // last number must be 0 (divisible by 10 a n = 10)
+		  j = 0;
+		  int values[] = {a,b,c,d,e,f,g,h,i,j};
+		  if(check(values))
+		    printf("%lu\n", a*1000000000ul + b*100000000ul +
+			   c*10000000ul + d*1000000ul + e*100000ul +
+			   f*10000ul + g*1000ul + h*100ul + i*10ul + j);
 		}
 	      }
 	    }
+	  }
 	}
       }
     }
