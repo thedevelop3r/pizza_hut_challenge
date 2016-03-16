@@ -2,37 +2,58 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-bool check(unsigned long n)
+int cmpfunc(const void * a, const void * b)
 {
-  printf("%lu\n", n);
-  printf("%lu\n", n / 10000);
-  printf("%lu\n", n % 10000);
-  int values[] = { 
-    n / 1000000000 % 10,
-    n / 100000000 % 10,
-    n / 10000000 % 10,
-    n / 1000000 % 10,
-    n / 100000 % 10,
-    n / 10000 % 10,
-    n / 1000 % 10,
-    n / 100 % 10,
-    n / 10 % 10,
-    n / 1 % 10,
-  };
-  //int values[] = {1,2,3,4,5,6,7,8,9,0};
-  
+  return (*(int*)a - *(int*)b );
+}
+
+int check(int *values)
+{ 
+  // get numbers along the way
+  unsigned long numbers[10];
   for(int i = 0; i < 10; i++)
   {
-    printf("%d, ", values[i]);
+    if(i > 0) numbers[i] = numbers[i-1] * 10 + (unsigned long) values[i];
+    else numbers[i] = (unsigned long) values[i];
   }
-  printf("\n");
+
+  // sort the values
+  qsort(values, 10, sizeof(int), cmpfunc);
+
+  // check for duplicate values
+  for(int i = 0; i < 10; i++)
+  {
+    // search for value
+    int * item = (int *) bsearch(&i, values, 10, sizeof(int), cmpfunc);
+
+    // detect duplicate
+    if(item != NULL) 
+    {
+      if((int) (item-values) >= 1)
+	if(values[(int) (item-values)-1] == *item) return false;
+      if((int) (item-values) <= 9)
+	if(values[(int) (item-values)+1] == *item) return false;
+    }
+  }
+
+  // check for divisibility
+  for(int i = 1; i <= 10; i++)
+  {
+    if(numbers[i-1] % i != 0) return false; 
+  }
+
+  return true;
 }
+
 int main()
 {
-  int arr[] = {0,1,2,3,4,5,6,7,8,9};
+  int arr[] = {2,0,7,6,5,4,3,2,7,0};
+
+  printf("%d\n", check(arr));
 
   int a,b,c,d,e,f,g,h,i,j;
-
+  
+  
   for(a = 0; a < 10; a++)
   {
     for(b = 0; b < 10; b++)
@@ -41,8 +62,7 @@ int main()
       {
 	for(d = 0; d < 10; d++)
 	{
-	  for(e = 0; e < 10; e++)
-	  {
+	  e = 5;
 	    for(f = 0; f < 10; f++)
 	    {
 	      for(g = 0; g < 10; g++)
@@ -51,22 +71,19 @@ int main()
 		{
 		  for(i = 0; i < 10; i++)
 		  {
-		    for(j = 0; j < 10; j++)
-		    {
-		       unsigned long n = 
-			      1000000000*a + 100000000*b + 10000000*c +
-			      1000000*d + 100000*e + 10000*f + 1000*g +
-			      100*h + 10*i + j;
-		       if(check(n)) printf("%lu", n);
-		    }
+		    j = 0;
+		      int values[] = {a,b,c,d,e,f,g,h,i,j};
+		      if(check(values))
+			printf("%lu\n", a*1000000000ul + b*100000000ul +
+			       c*10000000ul + d*1000000ul + e*100000ul +
+			       f*10000ul + g*1000ul + h*100ul + i*10ul + j);
 		  }
 		}
 	      }
 	    }
-	  }
 	}
       }
     }
   }    
-
+  
 }
