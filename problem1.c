@@ -11,8 +11,6 @@
  * Answer: 3816547290
  */
 
-
-
 // comparison of integers
 int cmpfunc(const void * a, const void * b)
 {
@@ -20,7 +18,7 @@ int cmpfunc(const void * a, const void * b)
 }
 
 // check if the number is a solution
-int check(int *values)
+bool check(int *values)
 { 
   // get numbers along the way
   unsigned long numbers[10];
@@ -84,6 +82,7 @@ int main()
 		{
 		  // last number must be 0 (divisible by 10 a n = 10)
 		  j = 0;
+		  // check the number for requirements
 		  int values[] = {a,b,c,d,e,f,g,h,i,j};
 		  if(check(values))
 		    printf("%lu\n", a*1000000000ul + b*100000000ul +
@@ -96,6 +95,6 @@ int main()
 	}
       }
     }
-  }    
-  
+  }
+  return 0;
 }
